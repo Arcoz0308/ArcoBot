@@ -1,15 +1,17 @@
 import { keyword, red } from "chalk";
 import { Client, Message } from "eris";
 import { MessageEvent } from "./events";
+import { BotSetting } from "./setting";
 
 export interface ArcoClientOptions {
     token: string;
     version: string;
-
+    setting: BotSetting;
 }
 export class ArcoClient extends Client {
 
     public version: string;
+    public setting: BotSetting;
 
     public stats: {
         wsEvents: number;
@@ -19,7 +21,7 @@ export class ArcoClient extends Client {
 		cmdErrors: number;
     }
 
-    constructor({token, version}: ArcoClientOptions) {
+    constructor({token, version, setting}: ArcoClientOptions) {
         super(token, {
             disableEvents: {
                 TYPING_START: true,
@@ -31,6 +33,7 @@ export class ArcoClient extends Client {
         });
 
         this.version = version;
+        this.setting = setting;
         
         this.stats = {
             wsEvents: 0,
@@ -52,7 +55,7 @@ export class ArcoClient extends Client {
 
     }
     setActivitys() {
-
+        if(!this.setting.status.enable) return;
     }
     onRawWS() {
         this.stats.wsEvents++;
