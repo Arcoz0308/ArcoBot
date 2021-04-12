@@ -29,6 +29,9 @@ export class ArcoClient extends Client {
             },
             messageLimit: 2
         });
+
+        this.version = version;
+        
         this.stats = {
             wsEvents: 0,
             wsWarnings: 0,
@@ -46,6 +49,9 @@ export class ArcoClient extends Client {
         this.on('warn', this.onWarn);
     }
     onReady() {
+
+    }
+    setActivitys() {
 
     }
     onRawWS() {
