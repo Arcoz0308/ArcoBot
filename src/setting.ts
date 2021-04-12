@@ -7,7 +7,7 @@ export interface BotSetting {
 export interface botStatusSetting {
     status: Status;
     enable: boolean;
-    updateInterval: number|null;
+    updateInterval: number;
     activitys: BotActivity[];
 }
 export interface BotActivity {

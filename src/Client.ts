@@ -1,7 +1,7 @@
-import { keyword, red } from "chalk";
-import { Client, Message } from "eris";
+import { green, keyword, red, white } from "chalk";
+import { Client} from "eris";
 import { MessageEvent } from "./events";
-import { BotSetting } from "./setting";
+import { ActivityTypes, BotSetting } from "./setting";
 
 export interface ArcoClientOptions {
     token: string;
@@ -12,6 +12,7 @@ export class ArcoClient extends Client {
 
     public version: string;
     public setting: BotSetting;
+    public isStarted: boolean = false;
 
     public stats: {
         wsEvents: number;
@@ -21,7 +22,7 @@ export class ArcoClient extends Client {
 		cmdErrors: number;
     }
 
-    constructor({token, version, setting}: ArcoClientOptions) {
+    public constructor({token, version, setting}: ArcoClientOptions) {
         super(token, {
             disableEvents: {
                 TYPING_START: true,
@@ -45,17 +46,42 @@ export class ArcoClient extends Client {
         // msg event
         const msg = new MessageEvent(this);
         this.on('messageCreate', msg.run);
-
+        
         this.on('ready', this.onReady);
         this.on('rawWS', this.onRawWS);
         this.on('error', this.onError);
         this.on('warn', this.onWarn);
     }
     onReady() {
+        if(this.isStarted) return;
+        this.isStarted = true;
 
+        console.log(green('----------------------------'));
+        console.log(green('bot are ready !'));
+        console.log(green('----------------------------'));
+        
+        this.setActivitys();
     }
     setActivitys() {
         if(!this.setting.status.enable) return;
+        if(this.setting.status.activitys.length === 0) return this.editStatus(this.setting.status.status);
+        let i = 0;
+
+        this.editStatus(this.setting.status.status, {
+            name: this.setting.status.activitys[i].content,
+            type: ActivityTypes[this.setting.status.activitys[i].type],
+            url: this.setting.status.activitys[i].url
+        });
+        if(this.setting.status.activitys.length === 1) return;
+
+        setInterval(() => {
+            i++;
+            this.editStatus(this.setting.status.status, {
+                name: this.setting.status.activitys[i].content,
+                type: ActivityTypes[this.setting.status.activitys[i].type],
+                url: this.setting.status.activitys[i].url
+            });
+        }, this.setting.status.updateInterval * 1000);
     }
     onRawWS() {
         this.stats.wsEvents++;
