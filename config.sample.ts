@@ -18,6 +18,12 @@ const config: BotSetting = {
                 type: 'PLAYING'
             }
         ]
+    },
+    database: {
+        host: '127.0.0.0',
+        user: 'root',
+        password: 'secret',
+        database: 'arco'
     }
 }
 export default config;

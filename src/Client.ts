@@ -2,6 +2,7 @@ import { green, keyword, red, white } from "chalk";
 import { Client} from "eris";
 import { MessageEvent } from "./events";
 import { ActivityTypes, BotSetting } from "./setting";
+import {DataBaseservice} from "./services";
 
 export interface ArcoClientOptions {
     token: string;
@@ -13,6 +14,7 @@ export class ArcoClient extends Client {
     public version: string;
     public setting: BotSetting;
     public isStarted: boolean = false;
+    public db: DataBaseservice;
 
     public stats: {
         wsEvents: number;
@@ -35,7 +37,9 @@ export class ArcoClient extends Client {
 
         this.version = version;
         this.setting = setting;
-        
+
+        this.db = new DataBaseservice(this, setting.database);
+
         this.stats = {
             wsEvents: 0,
             wsWarnings: 0,
@@ -51,6 +55,9 @@ export class ArcoClient extends Client {
         this.on('rawWS', this.onRawWS);
         this.on('error', this.onError);
         this.on('warn', this.onWarn);
+    }
+    public async init() {
+        await this.db.init();
     }
     onReady() {
         if(this.isStarted) return;

@@ -3,6 +3,7 @@ import { Status } from "eris";
 export interface BotSetting {
     token: string;
     status: botStatusSetting;
+    database: DBSetting;
 }
 export interface botStatusSetting {
     status: Status;
@@ -22,4 +23,11 @@ export enum ActivityTypes {
     LISTENING = 2, 
     WATCHING = 3,
     COMPETING = 5
+}
+export interface DBSetting {
+    host: string;
+    user: string;
+    password: string;
+    database: string;
+
 }
