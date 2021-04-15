@@ -1,14 +1,13 @@
-import { Message } from "eris";
 import { ArcoClient } from "../Client";
 
-export class MessageEvent {
-
+export abstract class Service {
     public client: ArcoClient;
 
     constructor(client: ArcoClient) {
         this.client = client;
     }
-    async run(message: Message) {
-        
+    public  abstract init(): Promise<void>;
+    public onClientReady() {
+
     }
 }

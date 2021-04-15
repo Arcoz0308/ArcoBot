@@ -1,22 +1,21 @@
 import { ArcoClient } from "../Client";
 import { DBSetting } from "../setting";
 import {createConnection, Connection, MysqlError} from "mysql";
-import { rejects } from "node:assert";
-import { resolve } from "node:path";
+import { Service } from "./Service";
+import config from "../../config";
 
 export enum TABLE {
     GUILD = 'Guild',
     MEMBER = 'Member'
 }
-export class DataBaseservice {
+export class DataBaseservice extends Service {
 
-    public client: ArcoClient;
     public setting: DBSetting;
     public connection?: Connection;
 
-    public constructor(client: ArcoClient, setting: DBSetting) {
-        this.client = client;
-        this.setting = setting;
+    public constructor(client: ArcoClient) {
+        super(client);
+        this.setting = config.database;
     }
     public init() {
         return new Promise((resolv, reject) => {

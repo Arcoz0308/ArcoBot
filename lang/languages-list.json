@@ -1,0 +1,23 @@
+[
+    {
+        "name": "en",
+        "fullName": "English",
+        "aliases": [
+            "en-US",
+            "en_Us",
+            "en",
+            "English"
+        ]
+
+    },
+    {
+        "name": "fr",
+        "fullName": "Français",
+        "aliases": [
+            "fr",
+            "fr-FR",
+            "fr_FR",
+            "Français"
+        ]
+    }
+]

@@ -1,20 +1,26 @@
-import { green, keyword, red, white } from "chalk";
+import { green, keyword, red} from "chalk";
 import { Client} from "eris";
-import { MessageEvent } from "./events";
 import { ActivityTypes, BotSetting } from "./setting";
-import {DataBaseservice} from "./services";
+import {DataBaseservice, TransleteService} from "./services";
 
 export interface ArcoClientOptions {
     token: string;
     version: string;
     setting: BotSetting;
 }
+export interface ClientServices {
+    database: DataBaseservice;
+    translete: TransleteService;
+}
 export class ArcoClient extends Client {
 
     public version: string;
     public setting: BotSetting;
     public isStarted: boolean = false;
+    public services: ClientServices;
+
     public db: DataBaseservice;
+    public t: TransleteService;
 
     public stats: {
         wsEvents: number;
@@ -38,7 +44,13 @@ export class ArcoClient extends Client {
         this.version = version;
         this.setting = setting;
 
-        this.db = new DataBaseservice(this, setting.database);
+        this.services = {
+            database: new DataBaseservice(this),
+            translete: new TransleteService(this)
+        }
+
+        this.db = this.services.database;
+        this.t = this.services.translete;
 
         this.stats = {
             wsEvents: 0,
@@ -47,10 +59,7 @@ export class ArcoClient extends Client {
             cmdProcessed: 0,
             cmdErrors: 0
         }
-        // msg event
-        const msg = new MessageEvent(this);
-        this.on('messageCreate', msg.run);
-        
+              
         this.on('ready', this.onReady);
         this.on('rawWS', this.onRawWS);
         this.on('error', this.onError);
