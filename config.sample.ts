@@ -3,7 +3,7 @@ import { BotSetting } from "./src/setting"
 const config: BotSetting = {
     //bot token
     token: "",
-    
+    applicatinId: "",
     status: {
         //type of status 
         status: 'offline',

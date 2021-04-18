@@ -12,6 +12,7 @@
     "@types/mysql": "^2.15.18",
     "@types/node": "^14.14.37",
     "chalk": "^4.1.0",
+    "discord-api-types": "^0.17.0",
     "eris": "^0.15.0",
     "mysql": "^2.18.1",
     "ts-node": "^9.1.1",

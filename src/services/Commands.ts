@@ -1,4 +1,5 @@
 import { red } from "chalk";
+import { GuildChannel, Message } from "eris";
 import {readdir} from "fs";
 import {resolve} from "path";
 import { ArcoClient } from "../Client";
@@ -44,9 +45,17 @@ export class CommandService extends Service {
                             process.exit(1);
                         }
                         this.cmdMap.set(a, arcocmd);
-                    })
+                    });
                 }
-            })
+            });
         });
+    }
+    onClientReady() {
+        this.client.on('messageCreate', this.onMessage);
+    }
+    async onMessage(message: Message) {
+        if(message.author.id === this.client.user.id || message.author.bot || !message.content.length) return;
+
+        const channel = message.channel;
     }
 }

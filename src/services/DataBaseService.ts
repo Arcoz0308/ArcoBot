@@ -18,7 +18,7 @@ export class DataBaseservice extends Service {
         this.setting = config.database;
     }
     public init() {
-        return new Promise((resolv, reject) => {
+        return new Promise<void>((resolv, reject) => {
             this.connection = createConnection({
                 host: this.setting.host,
                 user: this.setting.user,
@@ -27,7 +27,7 @@ export class DataBaseservice extends Service {
             });
             this.connection.connect((e: MysqlError) => {
                 if(e) reject(e);
-                else resolv(null);
+                else resolv();
             });
         })
     }

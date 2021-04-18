@@ -2,6 +2,7 @@ import { Status } from "eris";
 
 export interface BotSetting {
     token: string;
+    applicatinId: string;
     status: botStatusSetting;
     database: DBSetting;
 }
