@@ -24,6 +24,8 @@ const config: BotSetting = {
         user: 'root',
         password: 'secret',
         database: 'arco'
-    }
+    },
+    dev_build: false,
+    dev_guilds: ['x']
 }
 export default config;

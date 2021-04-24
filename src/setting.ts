@@ -5,6 +5,8 @@ export interface BotSetting {
     applicatinId: string;
     status: botStatusSetting;
     database: DBSetting;
+    dev_build: boolean;
+    dev_guilds: string[];
 }
 export interface botStatusSetting {
     status: Status;
