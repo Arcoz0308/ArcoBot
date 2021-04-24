@@ -32,5 +32,4 @@ export interface DBSetting {
     user: string;
     password: string;
     database: string;
-
 }
