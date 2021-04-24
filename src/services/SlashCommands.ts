@@ -2,6 +2,7 @@ import { APIApplicationCommand, APIApplicationCommandOption, APIInteraction, API
 import { ArcoClient } from "../Client";
 import { SlashCommand } from "../SlashCommand";
 import { Service } from "./Service";
+import {RequestMethod, MessageFile} from "eris"
 export interface BaseCommand {
     name: string;
     description: string;
@@ -10,7 +11,7 @@ export interface BaseCommand {
 }
 export class SlashCommandService extends Service {
     public commands: SlashCommand[] = [];
-    private request;
+    private request: (method: RequestMethod, url: string, auth?: boolean, body?: any, file?: MessageFile, _route?: string, short?: boolean) => Promise<Record<string, unknown>|any>;
     private auth: string;
     constructor(client: ArcoClient) {
         super(client);
@@ -77,6 +78,6 @@ export class SlashCommandService extends Service {
     // interaction
 
     async createInteractionResponse(reponse: APIInteractionResponse) {
-        
+
     }
 }
