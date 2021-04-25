@@ -30,7 +30,7 @@ export class CommandService extends Service {
             const files = await readDir(dir);
             files.forEach( async(file) => {
                 if(file.endsWith('.js')) {
-                    const cmd = await import (file);
+                    const cmd = await import(file);
                     const arcocmd: Command = new cmd(this.client);
                     
                     this.commands.push(arcocmd);

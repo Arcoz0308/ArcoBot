@@ -1,7 +1,7 @@
 import { green, keyword, red} from "chalk";
 import { Client} from "eris";
 import { ActivityTypes, BotSetting } from "./setting";
-import {DataBaseservice, TransleteService} from "./services";
+import {CommandService, DataBaseservice, SlashCommandService, TransleteService} from "./services";
 
 export interface ArcoClientOptions {
     /**
@@ -20,6 +20,8 @@ export interface ArcoClientOptions {
 export interface ClientServices {
     database: DataBaseservice;
     translete: TransleteService;
+    command: CommandService;
+    slashCommand: SlashCommandService;
 }
 export class ArcoClient extends Client {
 
@@ -30,6 +32,8 @@ export class ArcoClient extends Client {
 
     public db: DataBaseservice;
     public t: TransleteService;
+    public command: CommandService;
+    public slashCommand: SlashCommandService;
 
     public stats: {
         wsEvents: number;
@@ -54,11 +58,15 @@ export class ArcoClient extends Client {
 
         this.services = {
             database: new DataBaseservice(this),
-            translete: new TransleteService(this)
+            translete: new TransleteService(this),
+            command: new CommandService(this),
+            slashCommand: new SlashCommandService(this)
         }
 
         this.db = this.services.database;
         this.t = this.services.translete;
+        this.command = this.services.command;
+        this.slashCommand = this.services.slashCommand;
 
         this.stats = {
             wsEvents: 0,
@@ -77,12 +85,13 @@ export class ArcoClient extends Client {
      * init bot services
      */
     public async init(): Promise<void>{
-        await this.db.init();
+        this.slashCommand.init();
     }
     /**
      * end preparion of bot when he is ready
      */
     onReady(): void {
+        this.slashCommand.onClientReady();
         if(this.isStarted) return;
         this.isStarted = true;
 

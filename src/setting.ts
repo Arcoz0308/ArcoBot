@@ -1,3 +1,4 @@
+import { Snowflake } from "discord-api-types";
 import { Status } from "eris";
 
 export interface BotSetting {
@@ -6,7 +7,7 @@ export interface BotSetting {
     status: botStatusSetting;
     database: DBSetting;
     dev_build: boolean;
-    dev_guilds: string[];
+    dev_guilds: Snowflake[];
 }
 export interface botStatusSetting {
     status: Status;
