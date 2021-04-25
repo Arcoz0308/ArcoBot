@@ -9,7 +9,7 @@ async function main()  {
         version: version,
         setting: config
     });
-
+    bot.init();
     console.log(green('----------------------------'));
     console.log(green('Starting bot...'));
     console.log(green('----------------------------'));

@@ -1,4 +1,5 @@
 import {  APIApplicationCommandOption, APIInteraction } from "discord-api-types";
+import { SlashCommandApi } from "./api";
 import { ArcoClient } from "./Client";
 import { BaseCommand } from "./services";
 
@@ -11,13 +12,15 @@ export interface SlashCommandOption {
 export abstract class SlashCommand {
     
     public client: ArcoClient;
+    public api: SlashCommandApi;
     public name: string;
     public description: string;
     public options?: APIApplicationCommandOption[];
     public default_permission?: boolean;
 
-    constructor(client: ArcoClient, {name, description, options, default_permission = true}: SlashCommandOption) {
+    constructor(client: ArcoClient,api: SlashCommandApi, {name, description, options, default_permission = true}: SlashCommandOption) {
         this.client = client;
+        this.api = api;
         this.name = name;
         this.description = description;
         this.options = options;

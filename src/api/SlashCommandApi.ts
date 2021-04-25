@@ -2,13 +2,28 @@ import { APIApplicationCommand, APIInteractionResponse, APIMessage, Snowflake } 
 import { MessageFile, RequestMethod } from "eris";
 import { ArcoClient } from "../Client";
 import {BaseCommand} from "../services";
-
+import axios from "axios";
 export class SlashCommandApi {
-    private _request: (method: RequestMethod, url: string, auth?: boolean, body?: any, file?: MessageFile, _route?: string, short?: boolean) => Promise<Record<string, unknown>|any>;
     private _a: string;
+    private instance;
     constructor(client: ArcoClient) {
-        this._request = client.requestHandler.request;
         this._a = client.setting.applicatinId;
+        this.instance = axios.create({
+            baseURL: 'https://discord.com/api/v8/',
+            timeout: 1000,
+            headers: {
+                "Authorization": "Bot " + client.setting.token
+            }
+        })
+    }
+    private async _request(method: RequestMethod, url: string, body?: any): Promise<any> {
+        
+        let r = await this.instance({
+            method: method,
+            url: url,
+            data: body
+        });
+        return r.data;
     }
     // global commands methods
 
@@ -18,7 +33,7 @@ export class SlashCommandApi {
      * @returns a array of commands objects
      */
      getCommands(): Promise<APIApplicationCommand[]> {
-        return this._request('GET', `/applications/${this._a}/commands`, true);
+        return this._request('GET', `/applications/${this._a}/commands`);
     }
     
     /**
@@ -28,7 +43,7 @@ export class SlashCommandApi {
      * @returns a command object
      */
     createCommand(cmd: BaseCommand): Promise<APIApplicationCommand> {
-        return this._request('POST', `/applications/${this._a}/commands`, true, cmd);
+        return this._request('POST', `/applications/${this._a}/commands`, cmd);
     }
 
     /**
@@ -38,7 +53,7 @@ export class SlashCommandApi {
      * @returns a command object
      */
     getCommand(id: Snowflake): Promise<APIApplicationCommand> {
-        return this._request('GET', `/applications/${this._a}/commands/${id}`, true);
+        return this._request('GET', `/applications/${this._a}/commands/${id}`);
     }
 
     /**
@@ -49,7 +64,7 @@ export class SlashCommandApi {
      * @returns a command object
      */
     editCommand(id: Snowflake, cmd: BaseCommand): Promise<APIApplicationCommand> {
-        return this._request('PATCH', `/applications/${this._a}/commands/${id}`, true, cmd);
+        return this._request('PATCH', `/applications/${this._a}/commands/${id}`, cmd);
     }
 
     /**
@@ -58,7 +73,7 @@ export class SlashCommandApi {
      * @param id the id of the command
      */
     deleteCommand(id: Snowflake): Promise<unknown> {
-        return this._request('DELETE', `/applications/${this._a}/commands/${id}`, true);
+        return this._request('DELETE', `/applications/${this._a}/commands/${id}`);
     }
 
     /**
@@ -68,7 +83,7 @@ export class SlashCommandApi {
      * @returns a array of commands object
      */
     bulkOverwriteCommands(cmds: BaseCommand): Promise<APIApplicationCommand[]> {
-        return this._request('PUT', `/applications/${this._a}/commands`, true, cmds);
+        return this._request('PUT', `/applications/${this._a}/commands`, cmds);
     }
 
     // guild commands methods
@@ -80,7 +95,7 @@ export class SlashCommandApi {
      * @returns a array of commands objects
      */
     getGuildCommands(guildid: Snowflake): Promise<APIApplicationCommand[]> {
-        return this._request('GET', `/applications/${this._a}/guilds/${guildid}/commands`, true);
+        return this._request('GET', `/applications/${this._a}/guilds/${guildid}/commands`);
     }
 
     /**
@@ -91,7 +106,7 @@ export class SlashCommandApi {
      * @returns a command object
      */
     createGuildCommand(guildid: Snowflake, cmd: BaseCommand): Promise<APIApplicationCommand> {
-        return this._request('POST', `/applications/${this._a}/guilds/${guildid}/commands`, true, cmd);
+        return this._request('POST', `/applications/${this._a}/guilds/${guildid}/commands`, cmd);
     }
 
     /**
@@ -102,7 +117,7 @@ export class SlashCommandApi {
      * @returns a command object
      */
     getGuildCommand(guildid: Snowflake, id: Snowflake): Promise<APIApplicationCommand> {
-        return this._request('GET', `/applications/${this._a}/guilds/${guildid}/commands/${id}`, true);
+        return this._request('GET', `/applications/${this._a}/guilds/${guildid}/commands/${id}`);
     }
 
     /**
@@ -114,7 +129,7 @@ export class SlashCommandApi {
      * @returns a command object
      */
     editGuildCommand(guildid: Snowflake, id: Snowflake, cmd: BaseCommand): Promise<APIApplicationCommand> {
-        return this._request('PATCH', `applications/${this._a}/guilds/${guildid}/commands/${id}`, true, cmd);
+        return this._request('PATCH', `applications/${this._a}/guilds/${guildid}/commands/${id}`, cmd);
     }
 
     /**
@@ -124,7 +139,7 @@ export class SlashCommandApi {
      * @param id the id of the command
      */
     deleteGuildCommand(guilid: Snowflake, id: Snowflake): Promise<unknown> {
-        return this._request('DELETE', `/applications/${this._a}/guilds/{guild.id}/commands/${id}`, true);
+        return this._request('DELETE', `/applications/${this._a}/guilds/{guild.id}/commands/${id}`);
     }
 
     /**
@@ -135,7 +150,7 @@ export class SlashCommandApi {
      * @returns a array of commands objects
      */
     bulkOverwriteGuildCommand(guildid: Snowflake, cmds: BaseCommand): Promise<APIApplicationCommand[]> {
-        return this._request('PUT', `/applications/${this._a}/guilds/${guildid}/commands`, true, cmds);
+        return this._request('PUT', `/applications/${this._a}/guilds/${guildid}/commands`, cmds);
     }
 
     // interaction
@@ -149,7 +164,7 @@ export class SlashCommandApi {
      * @returns a message object
      */
     createInteractionResponse(reponse: APIInteractionResponse, id: Snowflake, token: string): Promise<APIMessage> {
-        return this._request('POST', `/interactions/${id}/${token}/callback`, true, reponse);
+        return this._request('POST', `/interactions/${id}/${token}/callback`, reponse);
     }
     /**
      * get original interaction response
@@ -158,7 +173,7 @@ export class SlashCommandApi {
      * @returns a message object
      */
     getOriginalInteractionResponce(token: string): Promise<APIMessage> {
-        return this._request('GET', `/webhooks/${this._a}/${token}/messages/@original`, true);
+        return this._request('GET', `/webhooks/${this._a}/${token}/messages/@original`);
     }
 
     /**
@@ -169,7 +184,7 @@ export class SlashCommandApi {
      * @returns a message object
      */
     editOriginalInteractionResponce(reponse: APIInteractionResponse, token: string): Promise<APIMessage> {
-        return this._request('PATCH', `/webhooks/${this._a}/${token}/messages/@original`, true, Response);
+        return this._request('PATCH', `/webhooks/${this._a}/${token}/messages/@original`,Response);
     }
 
     /**
@@ -178,7 +193,7 @@ export class SlashCommandApi {
      * @param token token of the interaction
      */
     deleteOrininalInteractionResponse(token: string): Promise<unknown> {
-        return this._request('DELETE', `/webhooks/${this._a}/${token}/messages/@original`, true);
+        return this._request('DELETE', `/webhooks/${this._a}/${token}/messages/@original`);
     }
 
     // TODO guild commands permissions

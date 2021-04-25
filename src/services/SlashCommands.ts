@@ -42,7 +42,8 @@ export class SlashCommandService extends Service{
     }
     async registerDevBuildCommands(): Promise<void> {
         this.client.setting.dev_guilds.forEach(async(guildid) => {
-            const cmds = await this.api.getGuildCommands(guildid);
+        const cmds = await this.api.getGuildCommands(guildid);
+        
             this.commands.forEach(async (command) => {
                 const cmd = cmds.find(c => c.name === command.name);
                 if (cmd) {
@@ -64,10 +65,11 @@ export class SlashCommandService extends Service{
     async initCommands(): Promise<void> {
         const dirs = await readDir(SLASH_COMMMAND_PATH);
         dirs.forEach(async(dir) => {
-            const files = await readDir(dir);
+            
+            const files = await readDir(SLASH_COMMMAND_PATH + '/' + dir);
             files.forEach(async(file) => {
-                const cmdClass = await import(file);
-                const cmd: SlashCommand = new cmdClass(this);
+                const cmdClass = require(SLASH_COMMMAND_PATH + '/' + dir + '/' + file).default;
+                const cmd: SlashCommand = new cmdClass(this.client, this.api);
                 this.commands.push(cmd);
             })
         })
