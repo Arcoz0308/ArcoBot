@@ -4,8 +4,17 @@ import { ActivityTypes, BotSetting } from "./setting";
 import {DataBaseservice, TransleteService} from "./services";
 
 export interface ArcoClientOptions {
+    /**
+     * token of the bot
+     */
     token: string;
+    /**
+     * version of the bot
+     */
     version: string;
+    /**
+     * setting object
+     */
     setting: BotSetting;
 }
 export interface ClientServices {
@@ -16,7 +25,7 @@ export class ArcoClient extends Client {
 
     public version: string;
     public setting: BotSetting;
-    public isStarted: boolean = false;
+    public isStarted = false;
     public services: ClientServices;
 
     public db: DataBaseservice;
@@ -29,7 +38,6 @@ export class ArcoClient extends Client {
 		cmdProcessed: number;
 		cmdErrors: number;
     }
-
     public constructor({token, version, setting}: ArcoClientOptions) {
         super(token, {
             disableEvents: {
@@ -65,10 +73,16 @@ export class ArcoClient extends Client {
         this.on('error', this.onError);
         this.on('warn', this.onWarn);
     }
-    public async init() {
+    /**
+     * init bot services
+     */
+    public async init(): Promise<void>{
         await this.db.init();
     }
-    onReady() {
+    /**
+     * end preparion of bot when he is ready
+     */
+    onReady(): void {
         if(this.isStarted) return;
         this.isStarted = true;
 
@@ -78,7 +92,10 @@ export class ArcoClient extends Client {
         
         this.setActivitys();
     }
-    setActivitys() {
+    /**
+     * init bot activitys
+     */
+    setActivitys(): void {
         if(!this.setting.status.enable) return;
         if(this.setting.status.activitys.length === 0) return this.editStatus(this.setting.status.status);
         let i = 0;
@@ -99,14 +116,23 @@ export class ArcoClient extends Client {
             });
         }, this.setting.status.updateInterval * 1000);
     }
-    onRawWS() {
+    /**
+     * add wsevent to counter
+     */
+    onRawWS(): void {
         this.stats.wsEvents++;
     }
-    onError(error: Error) {
+    /**
+     * log error
+     */
+    onError(error: Error): void {
         console.error(red('DISCORD ERROR : ' + error));
         this.stats.wsErrors++;
     }
-    onWarn(warn: string) {
+    /**
+     * log warn
+     */
+    onWarn(warn: string): void {
         console.warn(keyword('orange')('DISCORD WARN : ' + warn));
         this.stats.wsWarnings++;
     }

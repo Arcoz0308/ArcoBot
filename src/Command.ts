@@ -9,7 +9,8 @@ export interface CommandOption {
     filePath: string;
 }
 
-export type TransleteText = (key: string, replace?: {[key: string]: any}) => string;
+export type TransleteText = (key: string, replace?: {[key: string]: string}) => string;
+
 export type Context = {
     message: Message;
     args: string[];
@@ -27,7 +28,7 @@ export enum CommandCategory {
     // do no exist on lang
     BOT_OWNER = 'BOT_OWNER'
 }
-export class Command {
+export abstract class Command {
     
     public client: ArcoClient;
     public name: string;
@@ -42,8 +43,6 @@ export class Command {
         this.category = option.category;
         this.fillPath = option.filePath;
     }
-    async run({message, args, guild, channel, db, member, t}: Context) {
-
-    }
+    abstract run(c: Context): Promise<void>;
     
 }

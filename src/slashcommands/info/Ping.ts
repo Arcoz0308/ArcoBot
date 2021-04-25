@@ -10,7 +10,7 @@ export class Ping extends SlashCommand {
             description: 'check if bot reply'
         });
     }
-    run(interaction: APIInteraction) {
+    async run(interaction: APIInteraction): Promise<void> {
         
     }
 }

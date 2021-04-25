@@ -1,7 +1,7 @@
 import { green } from "chalk";
 import config from "../config";
 import { ArcoClient } from "./Client";
-const {version} = require('../package.json');
+import {version} from "../package.json"
 
 async function main()  {
     const bot = new ArcoClient({

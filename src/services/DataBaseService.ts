@@ -17,7 +17,7 @@ export class DataBaseservice extends Service {
         super(client);
         this.setting = config.database;
     }
-    public init() {
+    public init(): Promise<void> {
         return new Promise<void>((resolv, reject) => {
             this.connection = createConnection({
                 host: this.setting.host,

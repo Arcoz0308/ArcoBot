@@ -1,7 +1,7 @@
 import { ArcoClient } from "../Client";
 import { Service } from "./Service";
-
-export const langs = require('../../lang/languages-list.json') as LanguageObject[];
+import * as locallangs from "../../lang/languages-list.json";
+export const langs = locallangs as LanguageObject[];
 export type LanguageObject = {
     name: string;
     fullName: string;
@@ -15,7 +15,7 @@ export class TransleteService extends Service {
     public constructor(client: ArcoClient) {
         super(client);
     }
-    public async init() {
+    public async init(): Promise<void> {
         langs.forEach(lang => {
             this.langlist.push(lang.name);
         });

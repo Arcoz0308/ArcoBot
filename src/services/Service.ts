@@ -6,8 +6,8 @@ export abstract class Service {
     constructor(client: ArcoClient) {
         this.client = client;
     }
-    public  abstract init(): Promise<void>;
-    public onClientReady() {
-
+    public  abstract init(): void|Promise<void>;
+    public onClientReady(): void|Promise<void> {
+        return;
     }
 }

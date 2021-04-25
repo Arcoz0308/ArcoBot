@@ -1,5 +1,5 @@
 import { red } from "chalk";
-import { GuildChannel, Message } from "eris";
+import { Message } from "eris";
 import {readdir} from "fs";
 import {resolve} from "path";
 import { ArcoClient } from "../Client";
@@ -24,13 +24,13 @@ export class CommandService extends Service {
     constructor(client: ArcoClient) {
         super(client);
     }
-    public async init() {
+    public async init(): Promise<void> {
         const dirs = await readDir(COMMANDS_PATH);
         dirs.forEach( async (dir) => {
             const files = await readDir(dir);
-            files.forEach(file => {
+            files.forEach( async(file) => {
                 if(file.endsWith('.js')) {
-                    const cmd = require(file);
+                    const cmd = await import (file);
                     const arcocmd: Command = new cmd(this.client);
                     
                     this.commands.push(arcocmd);
@@ -50,12 +50,10 @@ export class CommandService extends Service {
             });
         });
     }
-    onClientReady() {
+    onClientReady(): void {
         this.client.on('messageCreate', this.onMessage);
     }
-    async onMessage(message: Message) {
+    async onMessage(message: Message): Promise<void> {
         if(message.author.id === this.client.user.id || message.author.bot || !message.content.length) return;
-
-        const channel = message.channel;
     }
 }
