@@ -13,7 +13,7 @@
     "@types/node": "^15.0.1",
     "axios": "^0.21.1",
     "chalk": "^4.1.0",
-    "discord-api-types": "^0.17.0",
+    "discord-api-types": "^0.18.0",
     "eris": "^0.15.0",
     "mysql": "^2.18.1",
     "ts-node": "^9.1.1"
