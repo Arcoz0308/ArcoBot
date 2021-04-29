@@ -26,7 +26,7 @@ export abstract class SlashCommand {
         this.options = options;
         this.default_permission = default_permission;
     }
-    abstract run(interaction: APIInteraction): Promise<void>;
+    abstract run(interaction: APIInteraction): Promise<void>|void;
     
 
     toBaseCommand(): BaseCommand {

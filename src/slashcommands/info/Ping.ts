@@ -11,9 +11,9 @@ export default class Ping extends SlashCommand {
             description: 'check if bot reply !'
         });
     }
-    async run(interaction: APIInteraction): Promise<void> {
+    run(interaction: APIInteraction): void {
         this.api.createInteractionResponse({type: 4, data: {
             content: 'pong !'
-        }}, interaction.id, interaction.token)
+        }}, interaction.id, interaction.token);
     }
 }

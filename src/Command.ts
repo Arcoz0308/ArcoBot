@@ -43,6 +43,6 @@ export abstract class Command {
         this.category = option.category;
         this.fillPath = option.filePath;
     }
-    abstract run(c: Context): Promise<void>;
+    abstract run(c: Context): Promise<void>|void;
     
 }

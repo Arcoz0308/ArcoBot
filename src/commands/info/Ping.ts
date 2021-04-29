@@ -10,7 +10,7 @@ export class Ping extends Command {
             filePath: __filename
         });
     }
-    async run({message, channel}: Context) {
+    run({message, channel}: Context): void {
         this.client.createMessage(channel.id, {
             content: "pong",
             messageReferenceID: message.id,

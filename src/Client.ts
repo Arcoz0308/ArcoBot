@@ -106,22 +106,22 @@ export class ArcoClient extends Client {
      */
     setActivitys(): void {
         if(!this.setting.status.enable) return;
-        if(this.setting.status.activitys.length === 0) return this.editStatus(this.setting.status.status);
+        if(this.setting.status.activities.length === 0) return this.editStatus(this.setting.status.status);
         let i = 0;
 
         this.editStatus(this.setting.status.status, {
-            name: this.setting.status.activitys[i].content,
-            type: ActivityTypes[this.setting.status.activitys[i].type],
-            url: this.setting.status.activitys[i].url
+            name: this.setting.status.activities[i].content,
+            type: ActivityTypes[this.setting.status.activities[i].type],
+            url: this.setting.status.activities[i].url
         });
-        if(this.setting.status.activitys.length === 1) return;
+        if(this.setting.status.activities.length === 1) return;
 
         setInterval(() => {
             i++;
             this.editStatus(this.setting.status.status, {
-                name: this.setting.status.activitys[i].content,
-                type: ActivityTypes[this.setting.status.activitys[i].type],
-                url: this.setting.status.activitys[i].url
+                name: this.setting.status.activities[i].content,
+                type: ActivityTypes[this.setting.status.activities[i].type],
+                url: this.setting.status.activities[i].url
             });
         }, this.setting.status.updateInterval * 1000);
     }

@@ -3,17 +3,22 @@ import { Status } from "eris";
 
 export interface BotSetting {
     token: string;
-    applicatinId: string;
+    applicationId: string;
     status: botStatusSetting;
     database: DBSetting;
     dev_build: boolean;
     dev_guilds: Snowflake[];
+    embed: EmbedSetting;
 }
 export interface botStatusSetting {
     status: Status;
     enable: boolean;
     updateInterval: number;
-    activitys: BotActivity[];
+    activities: BotActivity[];
+}
+export interface EmbedSetting {
+    color: number;
+    footer: string;
 }
 export interface BotActivity {
     content: string;
