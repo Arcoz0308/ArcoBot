@@ -25,7 +25,7 @@ export function optimiseObject(objectToCheck: Record<string, any>, defaultObject
  * @param format format of the image
  */
 export function getUserAvatar(user: User|APIUser,dynamic = false, size= 128, format: 'png'|'jpg'|'gif'|'webp' = 'png'): string {
-    if (!user.avatar) return `https://cdn.discordapp.com/embed/avatars/${parseInt(user.discriminator) % 5}.${format}`;
+    if (!user.avatar) return `https://cdn.discordapp.com/embed/avatars/${parseInt(user.discriminator, 10) % 5}.${format}`;
     if (user.avatar.startsWith('a_') && dynamic) return `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.gif?size=${size}`;
     return `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.${format}?size=${size}`;
 }
