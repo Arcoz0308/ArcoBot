@@ -1,4 +1,4 @@
-import { APIApplicationCommand, APIInteractionResponse, APIMessage, Snowflake } from "discord-api-types";
+import { APIApplicationCommand, APIInteractionResponse, APIMessage, Snowflake } from "discord-api-types/v8";
 import { RequestMethod } from "eris";
 import { ArcoClient } from "../Client";
 import {BaseCommand} from "../services";
@@ -17,7 +17,6 @@ export class SlashCommandApi {
         })
     }
     private async _request(method: RequestMethod, url: string, body?: any): Promise<any> {
-        
         const r = await this.instance({
             method: method,
             url: url,

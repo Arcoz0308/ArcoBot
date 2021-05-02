@@ -1,7 +1,7 @@
 import { green, keyword, red} from "chalk";
 import { Client} from "eris";
 import { ActivityTypes, BotSetting } from "./setting";
-import {CommandService, DataBaseservice, SlashCommandService, TransleteService} from "./services";
+import {CommandService, DataBaseService, SlashCommandService, TranslateService} from "./services";
 
 export interface ArcoClientOptions {
     /**
@@ -18,8 +18,8 @@ export interface ArcoClientOptions {
     setting: BotSetting;
 }
 export interface ClientServices {
-    database: DataBaseservice;
-    translete: TransleteService;
+    database: DataBaseService;
+    translate: TranslateService;
     command: CommandService;
     slashCommand: SlashCommandService;
 }
@@ -30,8 +30,8 @@ export class ArcoClient extends Client {
     public isStarted = false;
     public services: ClientServices;
 
-    public db: DataBaseservice;
-    public t: TransleteService;
+    public db: DataBaseService;
+    public t: TranslateService;
     public command: CommandService;
     public slashCommand: SlashCommandService;
 
@@ -57,14 +57,14 @@ export class ArcoClient extends Client {
         this.setting = setting;
 
         this.services = {
-            database: new DataBaseservice(this),
-            translete: new TransleteService(this),
+            database: new DataBaseService(this),
+            translate: new TranslateService(this),
             command: new CommandService(this),
             slashCommand: new SlashCommandService(this)
         }
 
         this.db = this.services.database;
-        this.t = this.services.translete;
+        this.t = this.services.translate;
         this.command = this.services.command;
         this.slashCommand = this.services.slashCommand;
 
@@ -88,7 +88,7 @@ export class ArcoClient extends Client {
         this.slashCommand.init();
     }
     /**
-     * end preparion of bot when he is ready
+     * end preparation of bot when he is ready
      */
     onReady(): void {
         this.slashCommand.onClientReady();
@@ -99,12 +99,12 @@ export class ArcoClient extends Client {
         console.log(green('bot are ready !'));
         console.log(green('----------------------------'));
         
-        this.setActivitys();
+        this.setActivities();
     }
     /**
-     * init bot activitys
+     * init bot activity
      */
-    setActivitys(): void {
+    setActivities(): void {
         if(!this.setting.status.enable) return;
         if(this.setting.status.activities.length === 0) return this.editStatus(this.setting.status.status);
         let i = 0;
@@ -126,7 +126,7 @@ export class ArcoClient extends Client {
         }, this.setting.status.updateInterval * 1000);
     }
     /**
-     * add wsevent to counter
+     * add ws event to counter
      */
     onRawWS(): void {
         this.stats.wsEvents++;

@@ -1,5 +1,5 @@
 export * from "./DataBaseService";
 export * from "./Service";
-export * from "./TransleteService";
+export * from "./TranslateService";
 export * from "./Commands";
 export * from "./SlashCommands";

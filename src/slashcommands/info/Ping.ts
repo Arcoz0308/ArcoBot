@@ -1,4 +1,4 @@
-import { APIInteraction } from "discord-api-types";
+import { APIInteraction } from "discord-api-types/v8";
 import { SlashCommandApi } from "../../api";
 import { ArcoClient } from "../../Client";
 import { SlashCommand } from "../../SlashCommand";

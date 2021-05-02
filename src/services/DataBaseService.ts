@@ -8,7 +8,7 @@ export enum TABLE {
     GUILD = 'Guild',
     MEMBER = 'Member'
 }
-export class DataBaseservice extends Service {
+export class DataBaseService extends Service {
 
     public setting: DBSetting;
     public connection?: Connection;
@@ -18,7 +18,7 @@ export class DataBaseservice extends Service {
         this.setting = config.database;
     }
     public init(): Promise<void> {
-        return new Promise<void>((resolv, reject) => {
+        return new Promise<void>((resolve, reject) => {
             this.connection = createConnection({
                 host: this.setting.host,
                 user: this.setting.user,
@@ -27,7 +27,7 @@ export class DataBaseservice extends Service {
             });
             this.connection.connect((e: MysqlError) => {
                 if(e) reject(e);
-                else resolv();
+                else resolve();
             });
         })
     }

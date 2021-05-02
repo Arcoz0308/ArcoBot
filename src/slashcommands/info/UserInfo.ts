@@ -1,10 +1,10 @@
-import { APIEmbed, APIInteraction, ApplicationCommandOptionType } from "discord-api-types";
+import { APIEmbed, APIInteraction, ApplicationCommandOptionType } from "discord-api-types/v8";
 import { isGuildInteraction } from "discord-api-types/utils/v8";
 import { SlashCommandApi } from "../../api";
 import { ArcoClient } from "../../Client";
 import { ResolveSlashUserParam } from "../../resolvers";
 import { SlashCommand } from "../../SlashCommand";
-import {getTag} from "../../utils";
+import {getTag, getUserAvatar} from "../../utils";
 
 export default class UserInfo extends SlashCommand {
     constructor(client: ArcoClient, api: SlashCommandApi) {
@@ -15,8 +15,7 @@ export default class UserInfo extends SlashCommand {
                 {
                     type: ApplicationCommandOptionType.USER,
                     name: 'user',
-                    description: 'the user that you will get infos',
-                    required: false
+                    description: 'the user that you will get infos'
                 }
             ]
         });
@@ -30,18 +29,42 @@ export default class UserInfo extends SlashCommand {
         }))![0];
         const embed: APIEmbed = {
             title: getTag(member.user),
-            description: `${member}`,
-            timestamp: Date.now().toString(),
+            timestamp: new Date().toISOString(),
+            color: this.client.setting.embed.color,
             footer: {
-                text: ''
-            }
+                text: `${getTag(interaction.member.user)} | userinfo `,
+                icon_url: getUserAvatar(interaction.member.user)
+            },
+            thumbnail: {
+                url: getUserAvatar(member.user, true)
+            },
+            fields: [
+                {
+                    name: 'mention',
+                    value: `<@${member.user.id}>`,
+                },
+                {
+                    name: 'surnom',
+                    value: member.nick ? member.nick : 'pas de surnom',
+                },
+                {
+                    name: 'roles',
+                    value: member.roles.length > 9 ?
+                        member.roles.slice(0, 9).map(id => `<@&${id}>`).join(', ') :
+                        member.roles.length < 1 ?
+                            'no roles' :
+                            member.roles.map(id => `<@&${id}>`).join(', ')
+                }
+            ]
         }
+        console.log(embed)
         this.api.createInteractionResponse({
             type: 4,
             data: {
                 embeds: [
                     embed
                 ]
+
             }
         }, interaction.id, interaction.token);
     }

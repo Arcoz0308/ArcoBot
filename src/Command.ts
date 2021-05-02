@@ -1,6 +1,6 @@
 import { Channel, Guild, Member, Message } from "eris";
 import { ArcoClient } from "./Client";
-import { DataBaseservice } from "./services";
+import { DataBaseService } from "./services";
 
 export interface CommandOption {
     name: string;
@@ -9,16 +9,16 @@ export interface CommandOption {
     filePath: string;
 }
 
-export type TransleteText = (key: string, replace?: {[key: string]: string}) => string;
+export type TranslateText = (key: string, replace?: {[key: string]: string}) => string;
 
 export type Context = {
     message: Message;
     args: string[];
     guild: Guild;
     channel: Channel;
-    db: DataBaseservice;
+    db: DataBaseService;
     member: Member;
-    t: TransleteText;
+    t: TranslateText;
 }
 
 // key for lang
@@ -36,7 +36,7 @@ export abstract class Command {
     public category: CommandCategory;
     public fillPath: string;
 
-    public constructor(client: ArcoClient, option: CommandOption) {
+    protected constructor(client: ArcoClient, option: CommandOption) {
         this.client = client;
         this.name = option.name;
         this.aliases = option.aliases || [];

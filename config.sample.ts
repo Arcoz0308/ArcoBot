@@ -1,5 +1,6 @@
 import { BotSetting } from "./src/setting"
 
+// noinspection SpellCheckingInspection
 const config: BotSetting = {
     //bot token
     token: "",
@@ -28,8 +29,7 @@ const config: BotSetting = {
     dev_build: false,
     dev_guilds: ['1234567890'],
     embed: {
-        color: 0,
-        footer: 'github'
+        color: 0
     }
 }
 export default config;

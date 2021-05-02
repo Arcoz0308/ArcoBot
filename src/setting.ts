@@ -1,4 +1,4 @@
-import { Snowflake } from "discord-api-types";
+import { Snowflake } from "discord-api-types/v8";
 import { Status } from "eris";
 
 export interface BotSetting {
@@ -18,7 +18,6 @@ export interface botStatusSetting {
 }
 export interface EmbedSetting {
     color: number;
-    footer: string;
 }
 export interface BotActivity {
     content: string;

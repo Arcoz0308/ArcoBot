@@ -1,4 +1,4 @@
-import {  APIApplicationCommandOption, APIInteraction } from "discord-api-types";
+import {  APIApplicationCommandOption, APIInteraction } from "discord-api-types/v8";
 import { SlashCommandApi } from "./api";
 import { ArcoClient } from "./Client";
 import { BaseCommand } from "./services";
